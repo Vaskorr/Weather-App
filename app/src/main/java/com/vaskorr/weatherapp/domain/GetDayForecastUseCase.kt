@@ -3,7 +3,11 @@ package com.vaskorr.weatherapp.domain
 import javax.inject.Inject
 
 class GetDayForecastUseCase @Inject constructor(){
-    fun getDayForecast(){
-        TODO()
+
+    @Inject
+    lateinit var forecastsRepository: ForecastsRepository
+
+    fun getDayForecast(location: String = ""): DayForecast{
+        return forecastsRepository.getDayForecast(location)
     }
 }
