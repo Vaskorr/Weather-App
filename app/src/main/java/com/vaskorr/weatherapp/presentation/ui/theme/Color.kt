@@ -1,4 +1,4 @@
-package com.vaskorr.weatherapp.ui.theme
+package com.vaskorr.weatherapp.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
