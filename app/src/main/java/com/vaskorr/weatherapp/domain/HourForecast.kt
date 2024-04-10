@@ -1,10 +1,10 @@
 package com.vaskorr.weatherapp.domain
 
-import java.util.Date
+import java.time.LocalDateTime
 
 data class HourForecast(
-    val datetime: Date,
-    val temp: Int,
+    val datetime: LocalDateTime,
+    val temp: Double,
     val icon: String,
-    val chanceOfRain: String
+    val chanceOfRain: Double
 )
