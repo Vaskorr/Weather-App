@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
-object JsonAdapter{
+class JsonAdapter @Inject constructor(){
     private fun getForecastData(jsonString: String): ForecastData {
         return Gson().fromJson(jsonString, ForecastData::class.java)
     }
