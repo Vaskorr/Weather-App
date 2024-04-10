@@ -39,7 +39,7 @@ class ForecastsRepositoryImpl @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getWeekForecast(location: String): LiveData<List<DayForecast>>{
         thread {
-            val query = if (location == "") Resources.getSystem().getString(R.string.default_city) else location
+            val query = if (location == "") context.resources.getString(R.string.default_city) else location
             weekData.postValue(forecastAPI.getWeekForecast(query))
         }
         return weekData
