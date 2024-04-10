@@ -5,9 +5,9 @@ import javax.inject.Inject
 
 class GetDayForecastUseCase @Inject constructor(
     val forecastsRepository: ForecastsRepository
-){
+) {
 
-    fun getDayForecast(location: String = ""): LiveData<DayForecast>{
+    fun getDayForecast(location: String = ""): LiveData<DayForecast> {
         return forecastsRepository.getDayForecast(location)
     }
 }

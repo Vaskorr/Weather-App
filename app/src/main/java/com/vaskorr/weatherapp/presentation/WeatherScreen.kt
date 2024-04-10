@@ -54,30 +54,33 @@ fun WeatherScreen(viewModel: WeatherViewModel) {
     ) {
         OutlinedTextField(
             value = currCity,
-            onValueChange = {v -> currCity = v},
+            onValueChange = { v -> currCity = v },
             label = { Text("Поиск по городам...") },
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {viewModel.updateData(currCity)}),
+            keyboardActions = KeyboardActions(onDone = { viewModel.updateData(currCity) }),
             modifier = Modifier.fillMaxWidth()
         )
-        Row(horizontalArrangement = Arrangement.SpaceEvenly,
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()){
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text(text = "Прогноз на неделю", color = MaterialTheme.colorScheme.onBackground)
-            Switch(checked = isWeekForecast, onCheckedChange = {isWeekForecast = it; viewModel.onForecastLenghtChange(it)})
+            Switch(
+                checked = isWeekForecast,
+                onCheckedChange = { isWeekForecast = it; viewModel.onForecastLenghtChange(it) })
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (!viewModel.isWeekForecast && dayForecast != null){
+        if (!viewModel.isWeekForecast && dayForecast != null) {
             DayForecastItem(dayForecast)
-        }else if (viewModel.isWeekForecast && weekForecast != null){
+        } else if (viewModel.isWeekForecast && weekForecast != null) {
             LazyColumn {
                 items(weekForecast) {
                     DayForecastItem(it)
                 }
             }
-        }
-        else{
+        } else {
             Text(text = "Не удается найти город", color = MaterialTheme.colorScheme.onBackground)
         }
     }
@@ -86,23 +89,40 @@ fun WeatherScreen(viewModel: WeatherViewModel) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DayForecastItem(dayForecast: DayForecast) {
-    Card (
+    Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .height(220.dp),
         shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer)
-    ){
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = dayForecast.location, style = MaterialTheme.typography.headlineLarge, color = MaterialTheme.colorScheme.onSecondaryContainer)
-            AsyncImage(model = "https:"+dayForecast.icon, contentDescription = "icon")
-            Text(text = "${dayForecast.datetime.dayOfMonth} ${dayForecast.datetime.month.getDisplayName(TextStyle.FULL, Locale("ru"))}", style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onSecondaryContainer)
-            Text(text = dayForecast.condition, style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.onSecondaryContainer)
+            Text(
+                text = dayForecast.location,
+                style = MaterialTheme.typography.headlineLarge,
+                color = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+            AsyncImage(model = "https:" + dayForecast.icon, contentDescription = "icon")
+            Text(
+                text = "${dayForecast.datetime.dayOfMonth} ${
+                    dayForecast.datetime.month.getDisplayName(
+                        TextStyle.FULL,
+                        Locale("ru")
+                    )
+                }",
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onSecondaryContainer
+            )
+            Text(
+                text = dayForecast.condition,
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onSecondaryContainer
+            )
             HourForecastCarousel(hourForecasts = dayForecast.hours)
         }
     }
@@ -113,7 +133,7 @@ fun HourForecastCarousel(hourForecasts: List<HourForecast>) {
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
-    ){
+    ) {
         items(hourForecasts) { hourForecast ->
             HourForecastItem(hourForecast)
         }
@@ -129,12 +149,27 @@ fun HourForecastItem(hourForecast: HourForecast) {
             .height(80.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AsyncImage(model = "https:"+hourForecast.icon, contentDescription = "icon")
-        Text(text = hourForecast.datetime.toString().split("T")[1], style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSecondaryContainer)
-        Text(text = "${hourForecast.temp}°", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSecondaryContainer)
+        AsyncImage(model = "https:" + hourForecast.icon, contentDescription = "icon")
+        Text(
+            text = hourForecast.datetime.toString().split("T")[1],
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSecondaryContainer
+        )
+        Text(
+            text = "${hourForecast.temp}°",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSecondaryContainer
+        )
         Row {
-            AsyncImage(model = "https://cdn.weatherapi.com/weather/64x64/day/308.png", contentDescription = "icon")
-            Text(text = "${hourForecast.chanceOfRain}%", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSecondaryContainer)
+            AsyncImage(
+                model = "https://cdn.weatherapi.com/weather/64x64/day/308.png",
+                contentDescription = "icon"
+            )
+            Text(
+                text = "${hourForecast.chanceOfRain}%",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSecondaryContainer
+            )
         }
     }
 }

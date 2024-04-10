@@ -7,7 +7,7 @@ class GetWeekForecastUseCase @Inject constructor(
     val forecastsRepository: ForecastsRepository
 ) {
 
-    fun getWeekForecast(location: String = ""): LiveData<List<DayForecast>>{
+    fun getWeekForecast(location: String = ""): LiveData<List<DayForecast>> {
         return forecastsRepository.getWeekForecast(location)
     }
 }

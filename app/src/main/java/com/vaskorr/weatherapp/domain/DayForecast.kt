@@ -2,7 +2,7 @@ package com.vaskorr.weatherapp.domain
 
 import java.time.LocalDate
 
-data class DayForecast (
+data class DayForecast(
     val location: String,
     val datetime: LocalDate,
     val condition: String,

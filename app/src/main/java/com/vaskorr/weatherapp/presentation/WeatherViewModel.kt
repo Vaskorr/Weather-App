@@ -25,19 +25,19 @@ class WeatherViewModel @Inject constructor(
         weekData = getWeekForecastUseCase.getWeekForecast()
     }
 
-    fun onForecastLenghtChange(state: Boolean){
+    fun onForecastLenghtChange(state: Boolean) {
         isWeekForecast = state
         updateData()
     }
 
 
-    fun updateData(currCity: String = ""){
-        if (currCity != ""){
+    fun updateData(currCity: String = "") {
+        if (currCity != "") {
             currentCity = currCity
         }
-        if (isWeekForecast){
+        if (isWeekForecast) {
             getWeekForecastUseCase.getWeekForecast(currentCity)
-        }else{
+        } else {
             getDayForecastUseCase.getDayForecast(currentCity)
         }
     }

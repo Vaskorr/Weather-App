@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.vaskorr.weatherapp.data.api.GetForecastAPI
 import com.vaskorr.weatherapp.data.api.GetForecastAPIImpl
 import com.vaskorr.weatherapp.domain.DayForecast
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -13,7 +12,7 @@ import okhttp3.OkHttpClient
 class DataModule {
 
     @Provides
-    fun provideHttpClient(): OkHttpClient{
+    fun provideHttpClient(): OkHttpClient {
         return OkHttpClient()
     }
 
@@ -28,7 +27,7 @@ class DataModule {
     }
 
     @Provides
-    fun bindForecastAPI(impl: GetForecastAPIImpl): GetForecastAPI{
+    fun bindForecastAPI(impl: GetForecastAPIImpl): GetForecastAPI {
         return impl
     }
 
