@@ -1,13 +1,14 @@
 package com.vaskorr.weatherapp.data
 
+import android.content.res.Resources
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.vaskorr.weatherapp.BuildConfig
-import com.vaskorr.weatherapp.data.json.Day
+import com.vaskorr.weatherapp.R
+import com.vaskorr.weatherapp.data.api.GetForecastAPI
 import com.vaskorr.weatherapp.data.json.JsonAdapter
-import com.vaskorr.weatherapp.di.ApplicationComponent
 import com.vaskorr.weatherapp.domain.DayForecast
 import com.vaskorr.weatherapp.domain.ForecastsRepository
 import okhttp3.OkHttpClient
@@ -19,61 +20,25 @@ import kotlin.concurrent.thread
 
 @Singleton
 class ForecastsRepositoryImpl @Inject constructor(
-    private val client: OkHttpClient,
+    private val forecastAPI: GetForecastAPI,
     private val dayData: MutableLiveData<DayForecast>,
-    private val weekData: MutableLiveData<List<DayForecast>>,
-    private val jsonAdapter: JsonAdapter,
-    private val apiKey: String
+    private val weekData: MutableLiveData<List<DayForecast>>
 ): ForecastsRepository{
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getDayForecast(q: String): LiveData<DayForecast>{
+    override fun getDayForecast(location: String): LiveData<DayForecast>{
         thread {
-            val request = Request.Builder()
-                .url("https://api.weatherapi.com/v1/forecast.json?q=$q&days=1&lang=ru&alerts=no&aqi=no&key=$apiKey")
-                .addHeader("accept", "application/json")
-                .build()
-
-            var body: String = ""
-
-            try {
-                client.newCall(request).execute().use { response ->
-                    if (!response.isSuccessful) {
-                        throw IOException("Запрос к серверу не был успешен:" +
-                                " ${response.code} ${response.message}")
-                    }
-                    body = response.body!!.string()
-                    dayData.postValue(jsonAdapter.getDayForecast(body))
-                }
-            } catch (e: IOException) {
-                println("Ошибка подключения: $e")
-            }
+            val query = if (location == "") Resources.getSystem().getString(R.string.default_city) else location
+            dayData.postValue(forecastAPI.getDayForecast(query))
         }
         return dayData
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getWeekForecast(q: String): LiveData<List<DayForecast>>{
+    override fun getWeekForecast(location: String): LiveData<List<DayForecast>>{
         thread {
-            val request = Request.Builder()
-                .url("https://api.weatherapi.com/v1/forecast.json?q=$q&days=7&lang=ru&alerts=no&aqi=no&key=$apiKey")
-                .addHeader("accept", "application/json")
-                .build()
-
-            var body: String = ""
-
-            try {
-                client.newCall(request).execute().use { response ->
-                    if (!response.isSuccessful) {
-                        throw IOException("Запрос к серверу не был успешен:" +
-                                " ${response.code} ${response.message}")
-                    }
-                    body = response.body!!.string()
-                    weekData.postValue(jsonAdapter.getWeekForecast(body))
-                }
-            } catch (e: IOException) {
-                println("Ошибка подключения: $e")
-            }
+            val query = if (location == "") Resources.getSystem().getString(R.string.default_city) else location
+            weekData.postValue(forecastAPI.getWeekForecast(query))
         }
         return weekData
     }
