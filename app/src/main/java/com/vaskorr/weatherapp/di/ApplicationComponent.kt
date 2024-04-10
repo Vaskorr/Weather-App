@@ -16,6 +16,8 @@ interface ApplicationComponent {
     interface ApplicationComponentFactory{
         fun create(
             @BindsInstance
+            context: Context,
+            @BindsInstance
             apiKey: String
         ): ApplicationComponent
     }

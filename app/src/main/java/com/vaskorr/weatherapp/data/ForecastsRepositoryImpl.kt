@@ -1,5 +1,6 @@
 package com.vaskorr.weatherapp.data
 
+import android.content.Context
 import android.content.res.Resources
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -20,6 +21,7 @@ import kotlin.concurrent.thread
 
 @Singleton
 class ForecastsRepositoryImpl @Inject constructor(
+    private val context: Context,
     private val forecastAPI: GetForecastAPI,
     private val dayData: MutableLiveData<DayForecast>,
     private val weekData: MutableLiveData<List<DayForecast>>
@@ -28,7 +30,7 @@ class ForecastsRepositoryImpl @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getDayForecast(location: String): LiveData<DayForecast>{
         thread {
-            val query = if (location == "") Resources.getSystem().getString(R.string.default_city) else location
+            val query = if (location == "") context.resources.getString(R.string.default_city) else location
             dayData.postValue(forecastAPI.getDayForecast(query))
         }
         return dayData

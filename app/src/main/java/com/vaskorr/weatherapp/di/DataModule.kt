@@ -27,7 +27,7 @@ class DataModule {
         return MutableLiveData<List<DayForecast>>()
     }
 
-    @Binds
+    @Provides
     fun bindForecastAPI(impl: GetForecastAPIImpl): GetForecastAPI{
         return impl
     }
